@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ticket {
+  id          String       @id @default(uuid())
+  email       String
+  message     String
+
+  status      TicketStatus @default(PENDING)
+
+  category    Category?
+  sentiment   Int?
+  urgency     Urgency?
+  aiDraft     String?
+
+  errorReason String?
+
+  createdAt   DateTime     @default(now())
+  processedAt DateTime?
+  resolvedAt  DateTime?
+}
+
+enum TicketStatus {
+  PENDING
+  PROCESSING
+  READY
+  FAILED
+  RESOLVED
+}
+
+enum Category {
+  Billing
+  Technical
+  FeatureRequest
+}
+
+enum Urgency {
+  High
+  Medium
+  Low
+}
