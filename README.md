@@ -168,18 +168,22 @@ Returns immediately with:
 ```
 
 Get Tickets
+
 GET /tickets
+
 GET /tickets?status=READY
 
 Get Ticket Detail
+
 GET /tickets/:id
 
 Resolve Ticket
+
 PATCH /tickets/:id/resolve
 
-```
-
 Example Test Cases
+
+```
 Billing Issue (High Urgency)
 I was charged twice for my annual subscription and this is unacceptable.
 
