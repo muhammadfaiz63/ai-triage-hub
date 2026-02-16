@@ -2,8 +2,10 @@
 
 Express + Redis (BullMQ) + Prisma + OpenAI integration.
 
-Start backend:
+### Start backend:
 
 pnpm install
+
 pnpm dev
+
 pnpm worker
