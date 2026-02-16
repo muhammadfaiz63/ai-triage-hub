@@ -181,7 +181,7 @@ Resolve Ticket
 
 PATCH /tickets/:id/resolve
 
-Example Test Cases
+## Example Test Cases
 
 ```
 Billing Issue (High Urgency)
