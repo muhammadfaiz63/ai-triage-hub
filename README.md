@@ -26,19 +26,8 @@ Build a system that:
 
 ## 🏗 Architecture Overview
 
-User / Client
-↓
-POST /tickets
-↓
-Express API (returns 201 immediately)
-↓
-Redis Queue (BullMQ)
-↓
-Background Worker
-↓
-OpenAI API
-↓
-PostgreSQL (Prisma)
+User / Client -> POST /tickets -> Express API (returns 201 immediately) -> Redis Queue (BullMQ) -> Background Worker
+-> OpenAI API -> PostgreSQL (Prisma)
 
 ### Key Design Principle:
 
@@ -176,6 +165,7 @@ Returns immediately with:
   "id": "...",
   "status": "PENDING"
 }
+```
 
 Get Tickets
 GET /tickets
@@ -186,6 +176,7 @@ GET /tickets/:id
 
 Resolve Ticket
 PATCH /tickets/:id/resolve
+
 ```
 
 Example Test Cases
@@ -197,3 +188,4 @@ The dashboard keeps loading indefinitely when I try to upload a file.
 
 Feature Request
 It would be great if you could add dark mode support.
+```
