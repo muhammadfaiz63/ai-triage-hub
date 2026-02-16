@@ -4,10 +4,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
-model Ticket {
+model ticket {
   id          String       @id @default(uuid())
   email       String
   message     String
