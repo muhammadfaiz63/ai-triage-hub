@@ -167,17 +167,17 @@ Returns immediately with:
 }
 ```
 
-Get Tickets
+### Get Tickets
 
 GET /tickets
 
 GET /tickets?status=READY
 
-Get Ticket Detail
+### Get Ticket Detail
 
 GET /tickets/:id
 
-Resolve Ticket
+### Resolve Ticket
 
 PATCH /tickets/:id/resolve
 
