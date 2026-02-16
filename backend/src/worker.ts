@@ -12,49 +12,45 @@ const worker = new Worker(
     const { ticketId } = job.data;
 
     try {
-      await prisma.ticket.update({
-        where: { id: ticketId },
-        data: { status: "PROCESSING" },
-      });
+        await prisma.ticket.update({
+          where: { id: ticketId },
+          data: { status: "PROCESSING" },
+        });
 
-      const ticket = await prisma.ticket.findUnique({
-        where: { id: ticketId },
-      });
+        const ticket = await prisma.ticket.findUnique({
+          where: { id: ticketId },
+        });
 
-      if (!ticket || ticket.status !== "PENDING") {
-        return;
-      }
+        if (!ticket) {
+          throw new Error("Ticket not found");
+        }
 
-      if (!ticket) {
-        throw new Error("Ticket not found");
-      }
+        const raw = await analyzeTicket(ticket.message);
 
-      const raw = await analyzeTicket(ticket.message);
+        if (!raw) {
+          throw new Error("AI returned empty response");
+        }
 
-      if (!raw) {
-        throw new Error("AI returned empty response");
-      }
+        const cleaned = raw
+          .replace(/```json/g, "")
+          .replace(/```/g, "")
+          .trim();
 
-      const cleaned = raw
-      .replace(/```json/g, "")
-      .replace(/```/g, "")
-      .trim();
+        const parsed = JSON.parse(cleaned);
+        const validated = aiResponseSchema.parse(parsed);
 
-      const parsed = JSON.parse(cleaned);
-      const validated = aiResponseSchema.parse(parsed);
-
-      await prisma.ticket.update({
-        where: { id: ticketId },
-        data: {
-          status: "READY",
-          category: validated.category,
-          sentiment: validated.sentiment,
-          urgency: validated.urgency,
-          aiDraft: validated.draft,
-          processedAt: new Date(),
-        },
-      });
-
+        await prisma.ticket.update({
+          where: { id: ticketId },
+          data: {
+            status: "READY",
+            category: validated.category,
+            sentiment: validated.sentiment,
+            urgency: validated.urgency,
+            aiDraft: validated.draft,
+            processedAt: new Date(),
+          },
+        });
+        
     } catch (error: any) {
       await prisma.ticket.update({
         where: { id: ticketId },
